@@ -22,18 +22,21 @@ public class JdbcMenuRepository implements MenuRepository {
 
     public List<Menu> getAll() {
 
-        return jdbcClient.sql("select * from menu")
+        return jdbcClient.sql("SELECT * FROM menu;")
                 .query(Menu.class)
                 .list();
     }
 
-    public List<Menu> getMenuItems(
-        @RequestParam(required = false) String name,
-        @RequestParam(required = false) Double lat, 
-        @RequestParam(required = false) Double lng,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "0") int offset,
-        @RequestParam(required = false) String category) {
+    public List<Menu> getMenuItems(@RequestParam(required = false) String name,
+                                   @RequestParam(required = false) Double lat, 
+                                   @RequestParam(required = false) Double lng,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "0") int offset,
+                                   @RequestParam(defaultValue = "0") Double minPrice,
+                                   @RequestParam(required = false) Double maxPrice,
+                                   @RequestParam(defaultValue = "0") Integer minCalories,
+                                   @RequestParam(required = false) Integer maxCalories,
+                                   @RequestParam(required = false) String category) {
 
         StringBuilder sql = new StringBuilder("SELECT * FROM menu WHERE 1=1 ");
         List<Object> params = new ArrayList<>();
@@ -54,14 +57,36 @@ public class JdbcMenuRepository implements MenuRepository {
             sql.append("AND category = ? ");
             params.add(category);
         }
+
+        if(minPrice != null){
+            sql.append("AND price >= ? ");
+            params.add(minPrice);
+        }
+
+        if(maxPrice != null){
+            sql.append("AND price <= ? ");
+            params.add(maxPrice);
+        }
+        if(minCalories!=null){
+            sql.append("AND calorie >= ? ");
+            params.add(minCalories);   
+        }
+        if(maxCalories != null){
+            sql.append("AND calorie <= ? ");
+            params.add(maxCalories);
+        }
+    
     
         sql.append("LIMIT ? OFFSET ?");
         params.add(size);
         params.add(offset);
     
         Object[] paramArray = params.toArray(new Object[0]);
-    
-        return jdbcClient.sql(sql.toString())
+        
+        System.out.println(sql.toString());
+        System.out.println(paramArray.toString());
+        
+        return jdbcClient.sql(sql.toString() +";")
                         .params(paramArray) 
                         .query(Menu.class)
                         .list();
@@ -69,22 +94,22 @@ public class JdbcMenuRepository implements MenuRepository {
 
 
     public Optional<Menu> getById(Integer id) {
-        return jdbcClient.sql("SELECT id,name,description,price,image,calorie,category,lat,lng FROM Menu WHERE id = :id" )
+        return jdbcClient.sql("SELECT * FROM menu WHERE id = :id ;" )
                 .param("id", id)
                 .query(Menu.class)
                 .optional();
     }
 
     public void create(Menu menu) {
-        var updated = jdbcClient.sql("INSERT INTO Menu(id,name,description,price,image,calorie,category,lat,lng) values(?,?,?,?,?,?,?,?,?)")
-                .params(List.of(menu.id(),menu.name(),menu.description(),menu.price(),menu.image(),menu.calorie(),menu.catergory(),menu.lat(), menu.lng()))
+        var updated = jdbcClient.sql("INSERT INTO Menu(id,name,description,price,image,calorie,category,lat,lng) values(?,?,?,?,?,?,?,?,?);")
+                .params(List.of(menu.id(),menu.name(),menu.description(),menu.price(),menu.image(),menu.calorie(),menu.category(),menu.lat(), menu.lng()))
                 .update();
 
         Assert.state(updated == 1, "Failed to create menu " + menu.name());
     }
 
     public void update(Menu menu, Integer id) {
-        var updated = jdbcClient.sql("update menu set name = ?, description = ?, price = ?, image = ?, calorie = ?, category = ?, lat = ?, lng = ? where id = ?")
+        var updated = jdbcClient.sql("update menu set name = ?, description = ?, price = ?, image = ?, calorie = ?, category = ?, lat = ?, lng = ? where id = ?;")
                 .params(List.of(menu.name(),menu.description(),menu.price(),menu.image(),menu.lat(), menu.lng(), id))
                 .update();
 
@@ -92,7 +117,7 @@ public class JdbcMenuRepository implements MenuRepository {
     }
 
     public void delete(Integer id) {
-        var updated = jdbcClient.sql("delete from menu where id = :id")
+        var updated = jdbcClient.sql("delete from menu where id = :id;")
                 .param("id", id)
                 .update();
 
@@ -107,25 +132,4 @@ public class JdbcMenuRepository implements MenuRepository {
         menus.stream().forEach(this::create);
     }
 
-    public List<Menu> findByLocation(double lat, double lng) {
-        return jdbcClient.sql("select * from menu WHERE lat = :lat AND lng = :lng")
-                .param("lat", lat)
-                .param("lng",lng)
-                .query(Menu.class)
-                .list();
-    }
-
-    public List<Menu> findByCategory(String category){
-        return jdbcClient.sql("select * from menu WHERE category = :category")
-                .param("category", category)
-                .query(Menu.class)
-                .list();
-    }
-
-    public List<Menu> findByName(String name){
-        return jdbcClient.sql("SELECT * FROM menu WHERE name LIKE :name")
-                .param("name", name + "%")  
-                .query(Menu.class)
-                .list();
-    }
 }

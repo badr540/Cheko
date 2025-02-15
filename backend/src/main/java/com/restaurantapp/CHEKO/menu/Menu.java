@@ -7,7 +7,7 @@ public record Menu(int id,
             double price,
             String image,
             int calorie,
-            String catergory,
+            String category,
             double lat,
             double lng
 ){}
