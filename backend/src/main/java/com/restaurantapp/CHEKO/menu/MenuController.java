@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @RestController 
-@RequestMapping("/api/menus") 
+@RequestMapping("/menus") 
 public class MenuController {
 
    private final JdbcMenuRepository menuRepository;

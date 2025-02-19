@@ -1,13 +1,27 @@
 //import { useState } from 'react'
-import './App.css'
-import Header from './Header/Header.jsx'
-import MainContent from './MainContent/MainContent.jsx'
+import Header from './Components/Header.jsx'
+import MainContent from './Components/MainContent.jsx';
+import { useState } from 'react'
+
 function App() {
+  const Tabs = ["Home", "Map"]
+
+  //fetch("/api/menus")
+  //.then(response => response.text())
+  //.then(data => console.log("Response from backend:", data))
+  //.catch(error => console.error("Error:", error));
+
+  
+  const [currentTab,setCurrentTab] = useState(0);
+
+  function changeTab(tabIdx){
+    setCurrentTab(tabIdx)
+  }
 
   return (
     <>
-      <Header/>
-      <MainContent/>
+      <Header tabs={Tabs} currTab={currentTab} changeTabCallBack={changeTab}/>
+      <MainContent tabs={Tabs} currTab={currentTab}/>
     </>
   )
 }
