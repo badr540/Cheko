@@ -1,11 +1,13 @@
-import { use, useState } from "react";
+import { use, useContext, useState } from "react";
 import Popup from "../Components/Popup";
 import ItemPopupBody from "./ItemPopupBody";
+import OrderContext from "../contexts/OrderContext";
 
 function ItemCard(props) {
     const [amount, setAmount] = useState(0)
+    const [orders,setOrders] = useContext(OrderContext)
     const [showPopup, setPopup] = useState(false);
-
+    
     const itemCardStyle = {
       display:" flex",
       alignItems:" center",
@@ -91,19 +93,21 @@ function ItemCard(props) {
     const decreaseAmount = () => {
         if(amount>0){
           setAmount((prevVal) => prevVal-1)
-          props.removeOrderCallBack(item)
+          let idx = orders.findIndex(curItem => curItem.name == item.name)
+          if (idx >= 0){
+            setOrders( prevArray => [...prevArray.slice(0, idx), ...prevArray.slice(idx + 1)]);
+          }
         }
     }
 
     const increaseAmount = () => {
       setAmount((prevVal) => prevVal+1)
-      props.addOrderCallBack(item)
+      setOrders(items => [...items,item])
     }
 
 
     const popupChildren = (<ItemPopupBody item={item} amount={amount} decreaseAmount={decreaseAmount} increaseAmount={increaseAmount} />)
     
-    const bestSeller = true
     return (
     <>
         <Popup  children = {popupChildren} trigger={showPopup} closePopup={() => setPopup(prevVal => !prevVal) } />
@@ -113,7 +117,7 @@ function ItemCard(props) {
           <div style={itemContentStyle}>
             <h3 style={itemNameStyle} >{item.name} </h3>
             <span style={itemCalStyle}>{item.calories} cal</span>
-            {bestSeller && <span style={bestSellerStyle}>Best Sale</span>}
+            {item.bestSeller && <span style={bestSellerStyle}>Best Seller</span>}
             <div style={itemFooterStyle}>
                 <span style={itemPriceStyle}>{item.price} SR</span>
                 <button style={actionBtnStyle} onClick={(e) => (e.stopPropagation(), decreaseAmount())}>-</button>

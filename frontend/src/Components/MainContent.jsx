@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useContext, useState, createContext, useEffect } from "react";
 
 import MenuBar from './MenuBar'
 import MenuSection from './MenuSection'
-import MenuData from '../assets/data'
-import Map from "../Map";
+import Map from "./Map";
+
+import  ItemContext  from "../contexts/ItemContext";
+import RestaurantContext from "../contexts/RestaurantContext";
+import { OrderProvider } from "../contexts/OrderContext";
+
 
 function MainContent({tabs, currTab}) {
-  const [orders, setOrders] = useState([])
+  const [currResturant, setCurrResturant] = useContext(RestaurantContext);
+  const [items,setItems] = useContext(ItemContext)
+
+  useEffect(() => {
+    fetch("/api/menu-items?restaurantId=" + currResturant)
+      .then(response => response.json())
+      .then(data =>{console.log(data), setItems(data)})
+      .catch(error => console.error("Error:", error));
+  }, [currResturant]);
 
   const mainContentStyle = {
     color:" black",
@@ -15,34 +27,35 @@ function MainContent({tabs, currTab}) {
     margin:" 0 auto",
     marginTop:" 25px",
   }
+
+
+  const itemCategories = items.map(item => item.category)
   
-  console.log(orders)
-  function addOrder(item){
-    setOrders([...orders,item])
-  }
-  function removeOrder(itemToRemove){
-    let idx = orders.findIndex(item => item.name == itemToRemove.name)
-    if (idx >= 0){
-      setOrders( prevArray => [...prevArray.slice(0, idx), ...prevArray.slice(idx + 1)]);
-    }
-  }
-  const MenuSections = MenuData.map((data,idx) => <MenuSection addOrderCallBack ={addOrder} removeOrderCallBack={removeOrder} key ={idx} name={data.category} items={data.items}/>)
-  const MenuBarData = MenuData.map((data) => ({category: data.category, size: data.items.length}))
+  const uniqeCategories = itemCategories.filter((category,idx) => idx === itemCategories.lastIndexOf(category));
+  const categoriesCount = uniqeCategories.map(c => itemCategories.reduce((count, current) => current === c ? count + 1 : count, 0))
+
+  const MenuSections = uniqeCategories.map((category,idx) => <MenuSection key ={idx} name={uniqeCategories[idx]} items={items.filter(item => item.category === category)}/>)
+  const MenuBarData = uniqeCategories.map((category, idx) => ({category: category, size: categoriesCount[idx]}))
 
   let CurrentView = (<></>)
   if(tabs[currTab] == "Home"){
     CurrentView = (
+    
     <div>
-      <main style={mainContentStyle}>
-        <MenuBar MenuBarData={MenuBarData} orders={orders}/>
-        {MenuSections}
-      </main>
+      <OrderProvider>
+        <main style={mainContentStyle}>
+          <MenuBar MenuBarData={MenuBarData}/>
+          {MenuSections}
+        </main>
+      </OrderProvider>
     </div>
     )
   }
   else{
     CurrentView = (<Map />)
   }
+  
+
   
   return (
     <>

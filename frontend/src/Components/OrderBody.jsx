@@ -1,5 +1,9 @@
+import { useContext } from "react"
+import OrderContext from "../contexts/OrderContext"
+
 function OrderBody(props){
-    
+    const [orders,setOrders] = useContext(OrderContext)
+
     const bodyStyle = {
         display: "flex",
         flexDirection:" column",
@@ -33,11 +37,11 @@ function OrderBody(props){
         color: "black",
         borderRadius: "24px"
     }
-    const subtotal = props.subtotal
-    console.log(props.subtotal)
-    const tax = subtotal * 0.15
 
+    const subtotal = orders.reduce((acc, item) => acc + item.price, 0)
+    const tax = parseFloat((subtotal * 0.15).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0])
     const total = subtotal + tax
+
     return (
     <div style={bodyStyle}>
         <div style={subTextStyle}>
@@ -59,9 +63,10 @@ function OrderBody(props){
         <span>{total}</span>
         </div>
 
-        <button style={btnStyle}>Place Order</button>
+        <button style={btnStyle} >Place Order</button>
     </div>
 
     )
 }
+//
 export default OrderBody

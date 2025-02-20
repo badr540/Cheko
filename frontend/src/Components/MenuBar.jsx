@@ -1,8 +1,11 @@
-import { useState,useRef } from "react";
+import { useState,useRef, useContext } from "react";
 import Seperator from "./Seperator";
 import OrderBody from "./OrderBody";
 import DropDown from "./DropDown";
+import OrderContext from "../contexts/OrderContext";
 function MenuBar(props) {
+
+    const orders = useContext(OrderContext)[0]
     const [showDropdown, setDropdown] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -92,7 +95,7 @@ function MenuBar(props) {
       )
     const buttons = props.MenuBarData.map((data, idx) => <button key={idx} style={menuBarBtnStyle} onClick={()=>scrollToCategory(data.category)}>{placeHolderIcon} {data.category} {data.size}</button>)
     
-    const dropDownChildren = (<OrderBody subtotal={props.orders.reduce((acc, item) => acc + item.price, 0)}/>) 
+    const dropDownChildren = (<OrderBody/>) 
     return (
         <div style={menuBarStyle}>
             <div ref={menuRef}
@@ -105,8 +108,10 @@ function MenuBar(props) {
                 {buttons}
             </div>
             <Seperator/>
-            <button style={menuBarBtnStyle} onClick={() => setDropdown(prevVal => !prevVal)}>{placeHolderIcon} orders {props.orders.length}</button>
-            <DropDown children={dropDownChildren} trigger={showDropdown} />
+            <button style={menuBarBtnStyle} onClick={() => setDropdown(prevVal => !prevVal)}>{placeHolderIcon} orders {orders.length}</button>
+            <DropDown trigger={showDropdown}>
+              <OrderBody/>
+            </DropDown>
         </div>
     )
   }
