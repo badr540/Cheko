@@ -11,7 +11,6 @@ function ItemPopupBody(props){
     padding: "20px",
     background:"#FFFFFF",
     gap: "10px",
-    aspectRatio: "1/1"
   }
 
   const itemImageStyle = {

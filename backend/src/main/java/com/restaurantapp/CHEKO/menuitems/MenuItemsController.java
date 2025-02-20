@@ -50,6 +50,12 @@ public class MenuItemsController {
         return menuRepository.getMinMaxValues();
     }
 
+    //a backend service to retrieve the second-highest calorie meal per category.
+    //@GetMapping("/second-heighest-calories")
+    //List<MenuItems> getSecondHighestCalories() {
+    //    return menuRepository.getSecondHighestCalories();
+    //}
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     void create(@RequestBody MenuItems menu) {

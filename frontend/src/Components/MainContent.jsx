@@ -10,15 +10,15 @@ import { OrderProvider } from "../contexts/OrderContext";
 
 
 function MainContent({tabs, currTab}) {
-  const [currResturant, setCurrResturant] = useContext(RestaurantContext);
+  const [currResturantId, setCurrResturantId] = useContext(RestaurantContext)
   const [items,setItems] = useContext(ItemContext)
-
+  console.log(currResturantId)
   useEffect(() => {
-    fetch("/api/menu-items?restaurantId=" + currResturant)
+    fetch("/api/menu-items?restaurantId=" + currResturantId)
       .then(response => response.json())
       .then(data =>{console.log(data), setItems(data)})
       .catch(error => console.error("Error:", error));
-  }, [currResturant]);
+  }, [currResturantId]);
 
   const mainContentStyle = {
     color:" black",
@@ -58,9 +58,9 @@ function MainContent({tabs, currTab}) {
 
   
   return (
-    <>
-    {CurrentView}
-    </>
+    <div>
+      {CurrentView}
+    </div>
   )
 }
 

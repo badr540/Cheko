@@ -1,24 +1,21 @@
-import { useContext } from "react";
-import RestaurantContext from "../contexts/RestaurantContext";
+import { useContext, useState } from "react";
+
+
 function MapPopupBody(props){
-    const setCurrResturant = useContext(RestaurantContext)
     const restaurant = props.restaurant;
     
     const CardStyle = {
       display:" flex",
+      height: "95px",
       alignItems:" center",
-      width: "350px",
-      height:" 150px",
       border:" None",
       borderRadius:"15px",
-      padding:" 10px",
       background:"#FFFFFF",
-      cursor:" pointer",
       gap: "10px"
     }
 
     const ImageStyle = {
-      height:" 100%",
+      width:"40%",
       objectFit:"cover",
       aspectRatio: "1/1",
       borderRadius:" 6px",
@@ -34,6 +31,7 @@ function MapPopupBody(props){
     }
 
     const NameStyle ={
+      color: "black",
       fontSize:" 1.2em",
       fontWeight:" bold",
       margin: "0px"
@@ -45,12 +43,13 @@ function MapPopupBody(props){
       alignItems:" center",
       gap:" 10px",
       color:" #777",
+      justifyContent:"space-between",
     }
 
 
     const BtnStyle = {
       padding:"1px",
-      height: "100%",
+      height: "30px",
       aspectRatio: "1/1",
       background:"#F4CBDF",
       color:"#000000",
@@ -71,12 +70,12 @@ function MapPopupBody(props){
             <div style={FooterStyle}>
                 <span >Menu list</span>
 
-                <button  style={BtnStyle} onClick={()=> {setCurrResturant(restaurant.id)} }>+</button>
+                <button  style={BtnStyle} onClick={props.callBack}>+</button>
             </div>
           </div>
         </div>
     </>
       );
 };
-  
+//setCurrResturantId(restaurant.id)
   export default MapPopupBody;

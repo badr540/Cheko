@@ -1,9 +1,8 @@
 import { createContext, useContext, useState } from "react";
-import MenuData from "../assets/menuData";
 const ItemContext = createContext(); // Create the context
 
 export const ItemProvider = ({ children }) => {
-  const [items, setItems] = useState(MenuData);
+  const [items, setItems] = useState([]);
   return (
     <ItemContext.Provider value={[items, setItems]}>
       {children}

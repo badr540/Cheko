@@ -1,11 +1,12 @@
-import { createContext, useContext, useState } from "react";
-import MenuData from "../assets/menuData";
-const RestaurantContext = createContext(); // Create the context
+import { createContext, useState } from "react";
+
+const RestaurantContext = createContext(); 
 
 export const RestaurantProvider = ({ children }) => {
-  const [currResturant, setCurrResturant] = useState(0);
+  const [currResturantId, setCurrResturantId] = useState(0);
+
   return (
-    <RestaurantContext.Provider value={[currResturant, setCurrResturant]}>
+    <RestaurantContext.Provider value={[currResturantId, setCurrResturantId]}>
       {children}
     </RestaurantContext.Provider>
   );

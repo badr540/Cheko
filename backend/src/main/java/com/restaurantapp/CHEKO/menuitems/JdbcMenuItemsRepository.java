@@ -13,7 +13,7 @@ import java.util.Optional;
 
 //things to add: filtering by category
 @Repository
-public class JdbcMenuItemsRepository implements MenuItemsRepository {
+public class JdbcMenuItemsRepository {
 
     private final JdbcClient jdbcClient;
 
