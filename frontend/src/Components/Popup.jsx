@@ -23,20 +23,20 @@ const closeBtnStyle = {
     position:" absolute",
     top:" 15px",
     right:" 15px",
-    width:" 23px", /* Equal width */
-    height:" 23px", /* Equal height */
+    width:" 23px", 
+    height:" 23px",
     backgroundColor: "#D6D6D6",
     color:" #fff",
     border:" none",
-    borderRadius:" 50%", /* Makes it circular */
+    borderRadius:" 50%",
     cursor:" pointer",
     fontSize:" 18px",
     display:" flex",
     alignItems:" center",
     justifyContent:" center",
-    padding:"5px", /* Ensure no padding */
-    margin:" 0", /* Ensure no margin */
-    lineheight:" 1", /* Ensure the × symbol is centered */
+    padding:"5px", 
+    margin:" 0", 
+    lineheight:" 1", 
 }
 
 

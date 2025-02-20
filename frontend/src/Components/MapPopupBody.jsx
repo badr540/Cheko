@@ -77,5 +77,5 @@ function MapPopupBody(props){
     </>
       );
 };
-//setCurrResturantId(restaurant.id)
-  export default MapPopupBody;
+
+export default MapPopupBody;

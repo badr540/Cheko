@@ -90,7 +90,7 @@ function MenuBar(props) {
     
     
     const placeHolderIcon = (<svg style={iconStyle} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100" height="100" fill="pink"/>
+        <rect width="100" height="100" fill="#E5DBDF"/>
       </svg>
       )
     const buttons = props.MenuBarData.map((data, idx) => <button key={idx} style={menuBarBtnStyle} onClick={()=>scrollToCategory(data.category)}>{placeHolderIcon} {data.category} {data.size}</button>)

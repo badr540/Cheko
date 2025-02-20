@@ -1,8 +1,8 @@
 function DropDown(props){
     const Style = {
       position: "absolute",
-      top:"20px",         // Positions it right below the trigger
-      left: -250,            // Aligns with left edge of parent
+      top:"20px",
+      left: -250,
       zIndex: 10 
     }
 

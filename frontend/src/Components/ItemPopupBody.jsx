@@ -74,7 +74,6 @@ function ItemPopupBody(props){
     borderRadius: "0.375rem",
   }
 
-  const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially ."
   return (
       <div style={itemCardStyle}>
         <div>
@@ -84,7 +83,7 @@ function ItemPopupBody(props){
           </div>
           <span style={itemCalStyle}>{item.calories} cal</span>
         </div>
-        <p style={descriptionStyle}>{description}</p>
+        <p style={descriptionStyle}>{item.description}</p>
         <img style={itemImageStyle} src={item.image} alt={item.name} />
         <div style={itemFooterStyle}>
             <span style={itemPriceStyle}>{item.price} SR</span>
