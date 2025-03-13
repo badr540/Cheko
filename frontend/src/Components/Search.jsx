@@ -4,8 +4,11 @@ import FilterBody from "./FilterBody";
 import Seperator from "./Seperator";
 import DropDown from "./DropDown";
 import  ItemContext  from "../contexts/ItemContext";
+import RestaurantContext from "../contexts/RestaurantContext";
+
 
 function Search() {
+  const [currResturantId,setCurrResturantId] = useContext(RestaurantContext)
   const setItems = useContext(ItemContext)[1]
   const [showDropdown, setDropdown] = useState(false);
   const [stats, setStats] = useState({
@@ -32,7 +35,8 @@ function Search() {
       categories: categories
     }
     
-    let query = "/api/menu-items?restaurantId=1&"
+    let query = "/api/menu-items?"
+    query += `restaurantId=${currResturantId}&`
     if (allData.search.length > 0){
       query+= `name=${allData.search}&`
     }

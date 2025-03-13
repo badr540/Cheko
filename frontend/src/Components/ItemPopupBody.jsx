@@ -14,7 +14,7 @@ function ItemPopupBody(props){
   }
 
   const itemImageStyle = {
-    height: "50%",
+    height: "40%",
     objectFit: "cover",
     borderRadius:" 6px",
   }

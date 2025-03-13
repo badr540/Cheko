@@ -46,10 +46,11 @@ public class JdbcMenuItemsRepository {
             sql.append("AND restaurant_id = ? ");
             params.add(restaurantId);
         }
+
         if (name != null) {
-            sql.append("AND name ILIKE ? ");
+            sql.append("AND name ILIKE '%' || ? || '%' ");
             params.add(name + "%");
-            sql.append("AND description ILIKE ? ");
+            sql.append("OR description ILIKE '%' || ? || '%' ");
             params.add(name + "%");
         }
 
@@ -94,6 +95,14 @@ public class JdbcMenuItemsRepository {
             sql.append("OFFSET ?");
             params.add(offset);
         }
+
+        if (name != null) {
+            sql.append("AND name ILIKE '%' || ? || '%' ");
+            params.add(name + "%");
+            sql.append("OR description ILIKE '%' || ? || '%' ");
+            params.add(name + "%");
+        }
+
         
         Object[] paramArray = params.toArray(new Object[0]);
 
